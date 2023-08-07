@@ -1,10 +1,14 @@
 import type { PropsWithChildren } from 'react';
 
+import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+type AgeRatingCategory = 'U' | 'PG' | '12' | '15' | '18' | 'R18';
+type ResolutionsCategory = 'sd' | 'hd' | '4k' | '8k';
 
 type Movie = {
   id: string;
@@ -33,6 +37,7 @@ type BottomTabsParamList = {
 
 type HomeStackParamList = {
   HomeScreen: undefined;
+  DetailScreen: { id: string };
 };
 type ComingSoonStackParamList = {
   ComingSoonScreen: undefined;
@@ -46,13 +51,15 @@ type DownloadsStackParamList = {
 };
 
 type HomeScreenNavigationProp = StackNavigationProp<
-  BottomTabsParamList,
-  'Home'
+  HomeStackParamList,
+  'HomeScreen'
 >;
-// type OrderScreenRouteType = RouteProp<BottomTabsParamList, 'Order'>;
+type DetailScreenRouteType = RouteProp<HomeStackParamList, 'DetailScreen'>;
 
 export type {
   SectionProps,
+  AgeRatingCategory,
+  ResolutionsCategory,
   Movie,
   Category,
   CategoriesList,
@@ -63,5 +70,5 @@ export type {
   SearchStackParamList,
   DownloadsStackParamList,
   HomeScreenNavigationProp,
-  //   OrderScreenRouteType,
+  DetailScreenRouteType,
 };

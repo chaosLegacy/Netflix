@@ -1,20 +1,21 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 
 import styles from './styles';
 
 import Poster from '@/components/molecules/Poster';
 import { Text, View } from '@/components/molecules/Themed';
-import { Category as CategoryType } from '@/types';
+import { Category as CategoryType, HomeScreenNavigationProp } from '@/types';
 
 type CategoryProps = {
   category: CategoryType;
 };
 const Category = ({ category }: CategoryProps) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const onPress = (id: string) => {
-    // eslint-disable-next-line no-console
-    console.log('id: ', id);
+    navigation.navigate('DetailScreen', { id });
   };
   return (
     <View style={styles.container}>

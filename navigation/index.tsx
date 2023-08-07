@@ -16,6 +16,7 @@ import {
   HomeScreen,
   SearchScreen,
 } from '@/screens';
+import { DetailScreen } from '@/screens/HomeScreen/Stack';
 import {
   BottomTabsParamList,
   ComingSoonStackParamList,
@@ -92,11 +93,19 @@ const DownloadsSoonStack = createStackNavigator<DownloadsStackParamList>();
 
 function HomeStackNavigator() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerBackTitleVisible: false,
+      }}>
       <HomeStack.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="DetailScreen"
+        component={DetailScreen}
+        options={{ title: '' }}
       />
     </HomeStack.Navigator>
   );

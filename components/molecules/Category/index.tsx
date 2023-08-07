@@ -24,6 +24,7 @@ const Category = ({ category }: CategoryProps) => {
         renderItem={({ item }) => <Poster item={item} onPress={onPress} />}
         estimatedItemSize={10}
         horizontal
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

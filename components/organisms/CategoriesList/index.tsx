@@ -18,6 +18,7 @@ const CategoriesList = ({ categories }: CategoriesListProps) => {
         data={categories.items}
         renderItem={({ item }) => <Category category={item} />}
         estimatedItemSize={200}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

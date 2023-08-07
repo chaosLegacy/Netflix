@@ -8,6 +8,12 @@ node_modules/
 dist/
 web-build/
 
+# Misc
+.env.local
+.env.development
+.env.test
+.env.production
+
 # Native
 *.orig.*
 *.jks

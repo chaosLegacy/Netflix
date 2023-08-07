@@ -1,14 +1,27 @@
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import type { PropsWithChildren } from 'react';
+
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
+type Movie = {
+  id: string;
+  poster: string;
+};
+type Category = {
+  id: string;
+  title: string;
+  movies: Movie[];
+};
+type CategoriesList = {
+  items: Category[];
+};
+
 type RootStackParamList = {
-    Root: undefined;
-    NotFound: undefined;
+  Root: undefined;
+  NotFound: undefined;
 };
 
 type BottomTabsParamList = {
@@ -19,31 +32,36 @@ type BottomTabsParamList = {
 };
 
 type HomeStackParamList = {
-    HomeScreen: undefined;
+  HomeScreen: undefined;
 };
 type ComingSoonStackParamList = {
-    ComingSoonScreen: undefined;
-}
+  ComingSoonScreen: undefined;
+};
 
 type SearchStackParamList = {
-    SearchScreen: undefined;
+  SearchScreen: undefined;
 };
 type DownloadsStackParamList = {
-    DownloadsScreen: undefined;
+  DownloadsScreen: undefined;
 };
 
-type HomeScreenNavigationProp = StackNavigationProp<BottomTabsParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<
+  BottomTabsParamList,
+  'Home'
+>;
 // type OrderScreenRouteType = RouteProp<BottomTabsParamList, 'Order'>;
-
 
 export type {
   SectionProps,
-    RootStackParamList,
-    BottomTabsParamList,
-    HomeStackParamList,
-    ComingSoonStackParamList,
-    SearchStackParamList,
-    DownloadsStackParamList,
+  Movie,
+  Category,
+  CategoriesList,
+  RootStackParamList,
+  BottomTabsParamList,
+  HomeStackParamList,
+  ComingSoonStackParamList,
+  SearchStackParamList,
+  DownloadsStackParamList,
   HomeScreenNavigationProp,
-//   OrderScreenRouteType,
+  //   OrderScreenRouteType,
 };

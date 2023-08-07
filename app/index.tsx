@@ -1,13 +1,15 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import React, { useEffect } from 'react'
-import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
+import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+
 import Navigation from '@/navigation';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-//SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [loaded, error] = useFonts({
@@ -22,7 +24,7 @@ const App = () => {
 
   useEffect(() => {
     if (loaded) {
-      //SplashScreen.hideAsync();
+      SplashScreen.hideAsync();
     }
   }, [loaded]);
 
@@ -30,10 +32,12 @@ const App = () => {
     return null;
   }
 
-  return <SafeAreaProvider>
-    <StatusBar />
-    <Navigation />
-  </SafeAreaProvider>
-}
+  return (
+    <SafeAreaProvider>
+      <StatusBar />
+      <Navigation />
+    </SafeAreaProvider>
+  );
+};
 
-export default App
+export default App;

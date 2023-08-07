@@ -1,0 +1,9 @@
+amplify-codegen-temp/models
+.prettierrc
+.eslintrc.js
+babel.config.js
+metro.config.js
+tsconfig.json
+build/*
+node_modules/*
+__tests__/*

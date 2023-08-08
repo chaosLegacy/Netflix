@@ -1,0 +1,15 @@
+projects:
+  netflix:
+    schemaPath: Users/chaoslegacy/Workspace/Github/ReactNative/Netflix/graphql/schema.json
+    includes:
+      - /graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: /services/API.ts
+        docsFilePath: /services/graphql
+extensions:
+  amplify:
+    version: 3

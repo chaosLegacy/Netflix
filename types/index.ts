@@ -10,9 +10,25 @@ type SectionProps = PropsWithChildren<{
 type AgeRatingCategory = 'U' | 'PG' | '12' | '15' | '18' | 'R18';
 type ResolutionsCategory = 'sd' | 'hd' | '4k' | '8k';
 
+type Episode = {
+  id: string;
+  title: string;
+  duration: string;
+  plot: string;
+  video: string;
+  poster: string;
+};
+type Season = {
+  id: string;
+  name: string;
+  episodes: {
+    items: Episode[];
+  };
+};
+
 type Movie = {
   id: string;
-  poster: string;
+  title: string;
 };
 type Category = {
   id: string;
@@ -62,6 +78,8 @@ export type {
   ResolutionsCategory,
   Movie,
   Category,
+  Episode,
+  Season,
   CategoriesList,
   RootStackParamList,
   BottomTabsParamList,

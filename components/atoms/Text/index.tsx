@@ -35,9 +35,9 @@ export const computeFontSize = (fontSize: FontSizeProps) =>
     : fontSize === 'md'
     ? 15
     : fontSize === 'xl'
-    ? 18
+    ? 20
     : fontSize === '2xl'
-    ? 22
+    ? 24
     : fontSize === '3xl'
     ? 33
     : fontSize === '4xl'

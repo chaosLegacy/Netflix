@@ -5,8 +5,9 @@ import { FlashList } from '@shopify/flash-list';
 
 import styles from './styles';
 
+import { Text } from '@/components/atoms/Text';
 import Poster from '@/components/molecules/Poster';
-import { Text, View } from '@/components/molecules/Themed';
+import { View } from '@/components/molecules/Themed';
 import { Category as CategoryType, HomeScreenNavigationProp } from '@/types';
 
 type CategoryProps = {
@@ -19,7 +20,9 @@ const Category = ({ category }: CategoryProps) => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{category.title}</Text>
+      <Text style={styles.title} fontWeight="bold" fontSize="xl">
+        {category.title}
+      </Text>
       <FlashList
         data={category.movies}
         renderItem={({ item }) => <Poster item={item} onPress={onPress} />}

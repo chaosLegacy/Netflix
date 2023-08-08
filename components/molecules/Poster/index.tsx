@@ -3,10 +3,10 @@ import { Image, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 
-import { MovieProps } from '@/types';
+import { LazyMovie } from '@/models';
 
 type PosterProps = {
-  item: MovieProps;
+  item: LazyMovie;
   onPress(id: string): void;
 };
 

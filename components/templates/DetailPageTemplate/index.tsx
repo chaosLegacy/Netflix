@@ -6,11 +6,11 @@ import ViewMoreText from 'react-native-view-more-text';
 import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { AVPlaybackStatus, Video } from 'expo-av';
+import { Skeleton } from 'moti/skeleton';
 
 import pickerSelectStyles from './pickerSelectStyles';
 import styles from './styles';
 
-import movie from '@/assets/data/movie';
 import AgeRating from '@/components/atoms/AgeRating';
 import { Button } from '@/components/atoms/Button';
 import Container from '@/components/atoms/Container';
@@ -20,30 +20,45 @@ import { View } from '@/components/molecules/Themed';
 import VideoPlayer from '@/components/molecules/VideoPlayer';
 import EpisodesList from '@/components/organisms/EpisodesList';
 import Colors from '@/constants/Colors';
-import { DetailScreenRouteType, Episode, Season } from '@/types';
+import { useGetEpisodes } from '@/hooks/useEpisode';
+import { useGetMovieByID } from '@/hooks/useMovie';
+import { useGetSeasons } from '@/hooks/useSeason';
+import { LazyEpisode, LazySeason } from '@/models';
+import { DetailScreenRouteType } from '@/types';
 
 const DetailPageTemplate = () => {
   const theme = useColorScheme() ?? 'light';
   const reverseTheme = theme === 'light' ? 'dark' : 'light';
   const { params } = useRoute<DetailScreenRouteType>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id } = params;
-
-  const firstSeason = movie.seasons.items[0];
-  const firstEpisode = firstSeason.episodes.items[0];
-  const availableSeasons = movie.seasons.items.map(({ id, name }) => ({
-    label: name,
-    value: id,
-  })); // movie.seasons.items.map((season) => season.name);
-
-  const [currentEpisode, setCurrentEpisode] = useState<Episode>();
-  const [selectedSeason, setSelectedSeason] = useState<Season>();
+  const [seasons, setSeasons] = useState<LazySeason[]>();
+  const [currentSeason, setCurrentSeason] = useState<LazySeason>();
+  const [currentEpisode, setCurrentEpisode] = useState<LazyEpisode>();
   const [status, setStatus] = useState<AVPlaybackStatus>();
 
+  const availableSeasons = seasons?.map(({ id, name }) => ({
+    label: name,
+    value: id,
+  }));
+
+  const { data: movie, loading: loadingMovie } = useGetMovieByID(id);
+  const { data: movieSeasons, loading: loadingMovieSeasons } =
+    useGetSeasons(id);
+  const { data: movieEpisodes, loading: loadingMovieEpisodes } = useGetEpisodes(
+    currentSeason?.id,
+  );
+
   useEffect(() => {
-    setSelectedSeason(firstSeason);
-    setCurrentEpisode(firstEpisode);
-  }, []);
+    setSeasons(movieSeasons);
+    if (movieSeasons?.length) {
+      setCurrentSeason(movieSeasons[0]);
+    }
+  }, [movieSeasons]);
+
+  useEffect(() => {
+    if (movieEpisodes?.length) setCurrentEpisode(movieEpisodes[0]);
+  }, [movieEpisodes]);
+
   const videoRef = useRef<Video>(null);
   const isVideoPlaying = status?.isLoaded && status.isPlaying;
   const onPlayPress = () => {
@@ -53,41 +68,55 @@ const DetailPageTemplate = () => {
         : videoRef.current?.playAsync();
     }
   };
-  const playSelectedEpisode = (episode: Episode) => {
+  const playSelectedEpisode = (episode: LazyEpisode) => {
     videoRef.current?.stopAsync();
     setCurrentEpisode(episode);
     videoRef.current?.playAsync();
   };
 
-  if (!selectedSeason) return <View />;
   return (
     <View style={styles.container}>
-      <VideoPlayer
-        episode={currentEpisode}
-        videoRef={videoRef}
-        setVideoStatus={setStatus}
-      />
-      {/* <Image style={styles.cover} source={{ uri: firstEpisode.poster }} /> */}
+      <Skeleton show={loadingMovieEpisodes}>
+        {currentEpisode ? (
+          <VideoPlayer
+            episode={currentEpisode}
+            videoRef={videoRef}
+            setVideoStatus={setStatus}
+          />
+        ) : null}
+      </Skeleton>
       <Container>
         <EpisodesList
           onPress={playSelectedEpisode}
-          episodesList={selectedSeason.episodes.items}
+          episodesList={movieEpisodes}
           headerComponent={
             <View>
-              <Text fontWeight="bold" fontSize="3xl">
-                {movie.title}
-              </Text>
+              <Skeleton show={loadingMovie}>
+                {movie ? (
+                  <Text fontWeight="bold" fontSize="3xl">
+                    {movie.title}
+                  </Text>
+                ) : null}
+              </Skeleton>
               <View style={styles.rowContainer}>
                 <Text style={styles.match} fontWeight="bold" fontSize="xl">
                   98% match
                 </Text>
-                <Text style={styles.item} color="secondary">
-                  {movie.year}
-                </Text>
+                <Skeleton show={loadingMovie}>
+                  {movie ? (
+                    <Text style={styles.item} color="secondary">
+                      {movie.year}
+                    </Text>
+                  ) : null}
+                </Skeleton>
                 <AgeRating style={styles.item} category="12" />
-                <Text style={styles.item} color="secondary">
-                  {movie.seasons.items.length} Seasons
-                </Text>
+                <Skeleton show={loadingMovieSeasons}>
+                  {seasons ? (
+                    <Text style={styles.item} color="secondary">
+                      {seasons.length} Seasons
+                    </Text>
+                  ) : null}
+                </Skeleton>
                 <Resolution style={styles.item} category="hd" size={33} />
               </View>
               <Button
@@ -124,7 +153,9 @@ const DetailPageTemplate = () => {
                   renderViewLess={(onPress) => (
                     <Text onPress={onPress}>View less</Text>
                   )}>
-                  <Text fontSize="xl">{movie.plot}</Text>
+                  <Skeleton show={!movie}>
+                    {movie ? <Text fontSize="xl">{movie.plot}</Text> : null}
+                  </Skeleton>
                 </ViewMoreText>
                 <View style={styles.detailsContainer}>
                   <ViewMoreText
@@ -135,9 +166,17 @@ const DetailPageTemplate = () => {
                     renderViewLess={(onPress) => (
                       <Text onPress={onPress}>View less</Text>
                     )}>
-                    <Text color="secondary">Cast: {movie.cast}</Text>
+                    <Skeleton show={!movie}>
+                      {movie ? (
+                        <Text color="secondary">Cast: {movie.cast}</Text>
+                      ) : null}
+                    </Skeleton>
                   </ViewMoreText>
-                  <Text color="secondary">Creator: {movie.creator}</Text>
+                  <Skeleton show={!movie}>
+                    {movie ? (
+                      <Text color="secondary">Creator: {movie.creator}</Text>
+                    ) : null}
+                  </Skeleton>
                 </View>
               </View>
               <View style={styles.rowContainer}>
@@ -187,34 +226,38 @@ const DetailPageTemplate = () => {
                 </Button>
               </View>
 
-              <RNPickerSelect
-                placeholder={{
-                  label: 'Select a season',
-                  value: null,
-                }}
-                onValueChange={(value) => {
-                  if (!value) {
-                    return;
-                  }
-                  setSelectedSeason(
-                    movie.seasons.items.find((item) => item.id === value),
-                  );
-                }}
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                textInputProps={{ color: Colors[theme].secondary.text }}
-                items={availableSeasons}
-                // Bug in Icon type, change from Icon?: React.ReactNode; to Icon?: React.FC;
-                Icon={() => (
-                  <Ionicons
-                    name="chevron-down"
-                    size={21}
-                    color={Colors[theme].secondary.text}
+              <Skeleton show={loadingMovieSeasons}>
+                {seasons ? (
+                  <RNPickerSelect
+                    placeholder={{
+                      label: 'Select a season',
+                      value: null,
+                    }}
+                    onValueChange={(value) => {
+                      if (!value) {
+                        return;
+                      }
+                      setCurrentSeason(
+                        seasons.find((item) => item.id === value),
+                      );
+                    }}
+                    style={pickerSelectStyles}
+                    useNativeAndroidPickerStyle={false}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    //@ts-ignore
+                    textInputProps={{ color: Colors[theme].secondary.text }}
+                    items={availableSeasons!}
+                    // Bug in Icon type, change from Icon?: React.ReactNode; to Icon?: React.FC;
+                    Icon={() => (
+                      <Ionicons
+                        name="chevron-down"
+                        size={21}
+                        color={Colors[theme].secondary.text}
+                      />
+                    )}
                   />
-                )}
-              />
+                ) : null}
+              </Skeleton>
             </View>
           }
         />

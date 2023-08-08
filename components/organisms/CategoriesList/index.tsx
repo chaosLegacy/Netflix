@@ -6,16 +6,16 @@ import styles from './styles';
 
 import Category from '@/components/molecules/Category';
 import { View } from '@/components/molecules/Themed';
-import { CategoriesList as CategoriesListTypes } from '@/types';
+import { LazyCategory } from '@/models';
 
 type CategoriesListProps = {
-  categories: CategoriesListTypes;
+  categories?: LazyCategory[];
 };
 const CategoriesList = ({ categories }: CategoriesListProps) => {
   return (
     <View style={styles.container}>
       <FlashList
-        data={categories.items}
+        data={categories}
         renderItem={({ item }) => <Category category={item} />}
         estimatedItemSize={200}
         showsVerticalScrollIndicator={false}

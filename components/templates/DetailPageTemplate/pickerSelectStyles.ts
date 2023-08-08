@@ -17,7 +17,7 @@ const pickerSelectStyles = StyleSheet.create({
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   viewContainer: {
-    width: 125,
+    width: 155,
     justifyContent: 'center',
     paddingVertical: 12,
   },

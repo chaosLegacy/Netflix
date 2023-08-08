@@ -5,26 +5,35 @@ import { FlashList } from '@shopify/flash-list';
 
 import styles from './styles';
 
+import { Spinner } from '@/components/atoms/Spinner';
 import { Text } from '@/components/atoms/Text';
 import Poster from '@/components/molecules/Poster';
 import { View } from '@/components/molecules/Themed';
-import { Category as CategoryType, HomeScreenNavigationProp } from '@/types';
+import { useGetMovies } from '@/hooks/useMovie';
+import { LazyCategory } from '@/models';
+import { HomeScreenNavigationProp } from '@/types';
 
 type CategoryProps = {
-  category: CategoryType;
+  category: LazyCategory;
 };
 const Category = ({ category }: CategoryProps) => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+  const { data: movies, error, loading } = useGetMovies(category.id);
   const onPress = (id: string) => {
     navigation.navigate('DetailScreen', { id });
   };
+  if (error) {
+    return <View />;
+  } else if (loading) {
+    return <Spinner />;
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title} fontWeight="bold" fontSize="xl">
         {category.title}
       </Text>
       <FlashList
-        data={category.movies}
+        data={movies}
         renderItem={({ item }) => <Poster item={item} onPress={onPress} />}
         estimatedItemSize={10}
         horizontal

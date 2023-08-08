@@ -5,10 +5,10 @@ import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 
 import styles from './styles';
 
-import { Episode } from '@/types';
+import { LazyEpisode } from '@/models';
 
 type VideoPlayerProps = {
-  episode?: Episode;
+  episode: LazyEpisode;
   videoRef: React.RefObject<Video>;
   setVideoStatus: React.Dispatch<
     React.SetStateAction<AVPlaybackStatus | undefined>
@@ -19,7 +19,6 @@ const VideoPlayer = ({
   videoRef,
   setVideoStatus,
 }: VideoPlayerProps) => {
-  console.log(episode);
   return (
     <View style={styles.container}>
       <Video
@@ -40,16 +39,6 @@ const VideoPlayer = ({
         isLooping
         onPlaybackStatusUpdate={(status) => setVideoStatus(() => status)}
       />
-      {/* {status?.isLoaded && (
-        <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status.isPlaying
-              ? videoRef.current?.pauseAsync()
-              : videoRef.current?.playAsync()
-          }
-        />
-      )} */}
     </View>
   );
 };

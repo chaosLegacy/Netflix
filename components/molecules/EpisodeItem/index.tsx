@@ -9,11 +9,11 @@ import { View } from '../Themed';
 import styles from './styles';
 
 import { Text } from '@/components/atoms/Text';
-import { Episode } from '@/types';
+import { LazyEpisode } from '@/models';
 
 type EpisodeProps = {
-  episode: Episode;
-  onPress: (episode: Episode) => void;
+  episode: LazyEpisode;
+  onPress: (episode: LazyEpisode) => void;
 };
 const EpisodeItem = ({ episode, onPress }: EpisodeProps) => {
   return (

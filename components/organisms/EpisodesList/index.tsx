@@ -7,11 +7,11 @@ import styles from './styles';
 
 import EpisodeItem from '@/components/molecules/EpisodeItem';
 import { View } from '@/components/molecules/Themed';
-import { Episode } from '@/types';
+import { LazyEpisode } from '@/models';
 
 type EpisodesListProps = {
-  episodesList: Episode[];
-  onPress: (episode: Episode) => void;
+  episodesList?: LazyEpisode[];
+  onPress: (episode: LazyEpisode) => void;
   headerComponent?:
     | React.ComponentType<any>
     | React.ReactElement<any, string | React.JSXElementConstructor<any>>

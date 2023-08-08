@@ -2,6 +2,9 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import '@azure/core-asynciterator-polyfill'; //<--- needed for DataStore to work
+import 'react-native-reanimated';
+import 'react-native-gesture-handler';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import { Amplify } from 'aws-amplify';
 import { StatusBar } from 'expo-status-bar';

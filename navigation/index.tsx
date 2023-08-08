@@ -1,8 +1,6 @@
 import React from 'react';
-import { Text, useColorScheme } from 'react-native';
+import { ColorSchemeName } from 'react-native';
 
-import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   DarkTheme,
   DefaultTheme,
@@ -10,138 +8,42 @@ import {
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {
-  ComingSoonScreen,
-  DownloadsScreen,
-  HomeScreen,
-  SearchScreen,
-} from '@/screens';
-import { DetailScreen } from '@/screens/HomeScreen/Stack';
-import {
-  BottomTabsParamList,
-  ComingSoonStackParamList,
-  DownloadsStackParamList,
-  HomeStackParamList,
-  SearchStackParamList,
-} from '@/types';
+import BottomTabNavigator from './BottomTabNavigator';
 
-const Tab = createMaterialTopTabNavigator<BottomTabsParamList>();
+import NotFoundScreen from '@/screens/NotFoundScreen';
+import { RootStackParamList } from '@/types';
 
-function RouteNavigator() {
-  const colorScheme = useColorScheme();
+// If you are not familiar with React Navigation, we recommend going through the
+// "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
+export default function Navigation({
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeName;
+}) {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <NavigationContainer> */}
-      <Tab.Navigator
-        tabBarPosition="bottom"
-        screenOptions={{
-          tabBarIndicatorStyle: { opacity: 0 },
-          tabBarLabelStyle: { textTransform: 'capitalize', fontSize: 12 },
-        }}>
-        <Tab.Screen
-          name="Home"
-          component={HomeStackNavigator}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="home" size={24} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="ComingSoon"
-          component={ComingSoonStackNavigator}
-          options={{
-            tabBarLabel: 'Coming Soon',
-            tabBarBadge: () => <Text>1</Text>,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name="video-library" size={24} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Search"
-          component={SearchStackNavigator}
-          options={{
-            tabBarLabel: 'Search',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="search" size={24} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Downloads"
-          component={DownloadsStackNavigator}
-          options={{
-            tabBarLabel: 'Downloads',
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="download" size={24} color={color} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      {/* <NavigationContainer
+        //linking={LinkingConfiguration}
+        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+      <RootNavigator />
       {/* </NavigationContainer> */}
     </ThemeProvider>
   );
 }
 
-// Each tab has it own navigation stack
-const HomeStack = createStackNavigator<HomeStackParamList>();
-const ComingSoonStack = createStackNavigator<ComingSoonStackParamList>();
-const SearchSoonStack = createStackNavigator<SearchStackParamList>();
-const DownloadsSoonStack = createStackNavigator<DownloadsStackParamList>();
+// A root stack navigator is often used for displaying modals on top of all other content
+// Read more here: https://reactnavigation.org/docs/modal
+const Stack = createStackNavigator<RootStackParamList>();
 
-function HomeStackNavigator() {
+function RootNavigator() {
   return (
-    <HomeStack.Navigator
-      screenOptions={{
-        headerBackTitleVisible: false,
-      }}>
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Root" component={BottomTabNavigator} />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: 'Oops!' }}
       />
-      <HomeStack.Screen
-        name="DetailScreen"
-        component={DetailScreen}
-        options={{ title: '' }}
-      />
-    </HomeStack.Navigator>
+    </Stack.Navigator>
   );
 }
-function ComingSoonStackNavigator() {
-  return (
-    <ComingSoonStack.Navigator>
-      <ComingSoonStack.Screen
-        name="ComingSoonScreen"
-        component={ComingSoonScreen}
-        options={{ headerShown: false }}
-      />
-    </ComingSoonStack.Navigator>
-  );
-}
-function SearchStackNavigator() {
-  return (
-    <SearchSoonStack.Navigator>
-      <SearchSoonStack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
-        options={{ headerShown: false }}
-      />
-    </SearchSoonStack.Navigator>
-  );
-}
-function DownloadsStackNavigator() {
-  return (
-    <DownloadsSoonStack.Navigator>
-      <DownloadsSoonStack.Screen
-        name="DownloadsScreen"
-        component={DownloadsScreen}
-        options={{ headerShown: false }}
-      />
-    </DownloadsSoonStack.Navigator>
-  );
-}
-
-export default RouteNavigator;

@@ -22,11 +22,7 @@ export default function Navigation({
 }) {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      {/* <NavigationContainer
-        //linking={LinkingConfiguration}
-        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
       <RootNavigator />
-      {/* </NavigationContainer> */}
     </ThemeProvider>
   );
 }

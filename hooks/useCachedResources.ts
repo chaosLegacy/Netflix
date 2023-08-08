@@ -1,35 +1,37 @@
 import React from 'react';
 
-import { Ionicons } from '@expo/vector-icons';
+import {
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  MaterialIcons,
+} from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
 export default function useCachedResources() {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  // Load fonts
+  const [loaded, error] = Font.useFonts({
+    SpaceMono: require('@/assets/fonts/SpaceMono-Regular.ttf'),
+    ...Ionicons.font,
+    ...MaterialIcons.font,
+    ...Feather.font,
+    ...FontAwesome5.font,
+  });
 
-  // Load any resources or data that we need prior to rendering the app
+  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   React.useEffect(() => {
-    async function loadResourcesAndDataAsync() {
-      try {
-        SplashScreen.preventAutoHideAsync();
+    if (error) throw error;
+  }, [error]);
 
-        // Load fonts
-        await Font.loadAsync({
-          ...Ionicons.font,
-          'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
-        });
-      } catch (e) {
-        // We might want to provide this error information to an error reporting service
-        // eslint-disable-next-line no-console
-        console.warn(e);
-      } finally {
-        setLoadingComplete(true);
-        SplashScreen.hideAsync();
-      }
+  React.useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
     }
+  }, [loaded]);
 
-    loadResourcesAndDataAsync();
-  }, []);
-
-  return isLoadingComplete;
+  return loaded;
 }

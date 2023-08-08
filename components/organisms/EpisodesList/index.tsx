@@ -11,18 +11,25 @@ import { Episode } from '@/types';
 
 type EpisodesListProps = {
   episodesList: Episode[];
+  onPress: (episode: Episode) => void;
   headerComponent?:
     | React.ComponentType<any>
     | React.ReactElement<any, string | React.JSXElementConstructor<any>>
     | null
     | undefined;
 };
-const EpisodesList = ({ episodesList, headerComponent }: EpisodesListProps) => {
+const EpisodesList = ({
+  episodesList,
+  headerComponent,
+  onPress,
+}: EpisodesListProps) => {
   return (
     <View style={styles.container}>
       <FlashList
         data={episodesList}
-        renderItem={({ item }) => <EpisodeItem episode={item} />}
+        renderItem={({ item }) => (
+          <EpisodeItem episode={item} onPress={onPress} />
+        )}
         estimatedItemSize={200}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={headerComponent}

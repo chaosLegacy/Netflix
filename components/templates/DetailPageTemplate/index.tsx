@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Image, useColorScheme } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { useColorScheme } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import ViewMoreText from 'react-native-view-more-text';
 
 import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import { AVPlaybackStatus, Video } from 'expo-av';
 
 import pickerSelectStyles from './pickerSelectStyles';
 import styles from './styles';
@@ -16,9 +17,10 @@ import Container from '@/components/atoms/Container';
 import Resolution from '@/components/atoms/Resolution';
 import { Text } from '@/components/atoms/Text';
 import { View } from '@/components/molecules/Themed';
+import VideoPlayer from '@/components/molecules/VideoPlayer';
 import EpisodesList from '@/components/organisms/EpisodesList';
 import Colors from '@/constants/Colors';
-import { DetailScreenRouteType, Season } from '@/types';
+import { DetailScreenRouteType, Episode, Season } from '@/types';
 
 const DetailPageTemplate = () => {
   const theme = useColorScheme() ?? 'light';
@@ -34,21 +36,41 @@ const DetailPageTemplate = () => {
     value: id,
   })); // movie.seasons.items.map((season) => season.name);
 
+  const [currentEpisode, setCurrentEpisode] = useState<Episode>();
   const [selectedSeason, setSelectedSeason] = useState<Season>();
+  const [status, setStatus] = useState<AVPlaybackStatus>();
 
   useEffect(() => {
     setSelectedSeason(firstSeason);
+    setCurrentEpisode(firstEpisode);
   }, []);
+  const videoRef = useRef<Video>(null);
+  const isVideoPlaying = status?.isLoaded && status.isPlaying;
   const onPlayPress = () => {
-    // eslint-disable-next-line no-console
-    console.log('Play...');
+    if (status?.isLoaded) {
+      status.isPlaying
+        ? videoRef.current?.pauseAsync()
+        : videoRef.current?.playAsync();
+    }
   };
+  const playSelectedEpisode = (episode: Episode) => {
+    videoRef.current?.stopAsync();
+    setCurrentEpisode(episode);
+    videoRef.current?.playAsync();
+  };
+
   if (!selectedSeason) return <View />;
   return (
     <View style={styles.container}>
-      <Image style={styles.cover} source={{ uri: firstEpisode.poster }} />
+      <VideoPlayer
+        episode={currentEpisode}
+        videoRef={videoRef}
+        setVideoStatus={setStatus}
+      />
+      {/* <Image style={styles.cover} source={{ uri: firstEpisode.poster }} /> */}
       <Container>
         <EpisodesList
+          onPress={playSelectedEpisode}
           episodesList={selectedSeason.episodes.items}
           headerComponent={
             <View>
@@ -69,13 +91,13 @@ const DetailPageTemplate = () => {
                 <Resolution style={styles.item} category="hd" size={33} />
               </View>
               <Button
-                label="Play"
+                label={isVideoPlaying ? 'Play' : 'Pause'}
                 onPress={onPlayPress}
                 childrenPosition="left"
                 size="large"
                 style={styles.button}>
                 <FontAwesome5
-                  name="play"
+                  name={isVideoPlaying ? 'play' : 'pause'}
                   size={18}
                   color={Colors[reverseTheme].primary.text}
                 />

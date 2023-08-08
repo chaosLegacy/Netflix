@@ -13,13 +13,14 @@ import { Episode } from '@/types';
 
 type EpisodeProps = {
   episode: Episode;
+  onPress: (episode: Episode) => void;
 };
-const EpisodeItem = ({ episode }: EpisodeProps) => {
+const EpisodeItem = ({ episode, onPress }: EpisodeProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.rowRoot}>
         <View style={styles.rowContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onPress(episode)}>
             <Image style={styles.cover} source={{ uri: episode.poster }} />
             <View style={styles.buttonContainer} />
             <Feather

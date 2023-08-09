@@ -3,12 +3,14 @@ import { Image, TouchableOpacity } from 'react-native';
 import ViewMoreText from 'react-native-view-more-text';
 
 import { Feather } from '@expo/vector-icons';
+import { Skeleton } from 'moti/skeleton';
 
 import { View } from '../Themed';
 
 import styles from './styles';
 
 import { Text } from '@/components/atoms/Text';
+import { useGetStorage } from '@/hooks/useStorage';
 import { LazyEpisode } from '@/models';
 
 type EpisodeProps = {
@@ -16,12 +18,20 @@ type EpisodeProps = {
   onPress: (episode: LazyEpisode) => void;
 };
 const EpisodeItem = ({ episode, onPress }: EpisodeProps) => {
+  const { data: posterUrl, loading } = useGetStorage(episode.poster);
   return (
     <View style={styles.container}>
       <View style={styles.rowRoot}>
         <View style={styles.rowContainer}>
           <TouchableOpacity onPress={() => onPress(episode)}>
-            <Image style={styles.cover} source={{ uri: episode.poster }} />
+            <Skeleton
+              show={loading}
+              width={styles.cover.width}
+              height={styles.cover.height}>
+              {posterUrl ? (
+                <Image style={styles.cover} source={{ uri: posterUrl }} />
+              ) : null}
+            </Skeleton>
             <View style={styles.buttonContainer} />
             <Feather
               name="play-circle"

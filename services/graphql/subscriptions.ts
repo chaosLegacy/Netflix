@@ -13,7 +13,10 @@ export const onCreateCategory = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -49,7 +52,10 @@ export const onUpdateCategory = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -85,7 +91,10 @@ export const onDeleteCategory = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -117,7 +126,10 @@ export const onCreateMovie = /* GraphQL */ `
       title
       poster
       year
+      isSeries
       numberOfSeasons
+      duration
+      video
       plot
       cast
       creator
@@ -169,7 +181,10 @@ export const onUpdateMovie = /* GraphQL */ `
       title
       poster
       year
+      isSeries
       numberOfSeasons
+      duration
+      video
       plot
       cast
       creator
@@ -221,7 +236,10 @@ export const onDeleteMovie = /* GraphQL */ `
       title
       poster
       year
+      isSeries
       numberOfSeasons
+      duration
+      video
       plot
       cast
       creator
@@ -277,7 +295,10 @@ export const onCreateSeason = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -344,7 +365,10 @@ export const onUpdateSeason = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -411,7 +435,10 @@ export const onDeleteSeason = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -486,7 +513,10 @@ export const onCreateEpisode = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -538,7 +568,10 @@ export const onUpdateEpisode = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -590,7 +623,10 @@ export const onDeleteEpisode = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator

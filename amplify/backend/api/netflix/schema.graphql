@@ -1,3 +1,8 @@
+enum MediaType {
+  MOVIE
+  SERIES
+}
+
 type Category @model @auth(rules: [{allow: private}]) {
   id: ID!
   title: String!
@@ -9,7 +14,10 @@ type Movie @model @auth(rules: [{allow: private}]) {
   title: String!
   poster: String!
   year: Int!
-  numberOfSeasons: Int!
+  type: MediaType!
+  numberOfSeasons: Int
+  duration: Int
+  video: String
   plot: String!
   cast: String!
   creator: String!
@@ -35,4 +43,5 @@ type Episode @model @auth(rules: [{allow: private}]) {
   video: String!
   seasonID: ID! @index(name: "bySeason")
   season: Season @belongsTo(fields: ["seasonID"])
-} 
+}
+ 

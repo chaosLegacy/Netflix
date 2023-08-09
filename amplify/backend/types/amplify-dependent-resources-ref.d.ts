@@ -15,5 +15,11 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolId": "string",
       "UserPoolName": "string"
     }
+  },
+  "storage": {
+    "netflixMediaS3": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }

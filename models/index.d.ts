@@ -2,7 +2,10 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
-
+export enum MediaType {
+  MOVIE = "MOVIE",
+  SERIES = "SERIES"
+}
 
 
 
@@ -45,7 +48,10 @@ type EagerMovie = {
   readonly title: string;
   readonly poster: string;
   readonly year: number;
-  readonly numberOfSeasons: number;
+  readonly type: MediaType | keyof typeof MediaType;
+  readonly numberOfSeasons?: number | null;
+  readonly duration?: number | null;
+  readonly video?: string | null;
   readonly plot: string;
   readonly cast: string;
   readonly creator: string;
@@ -65,7 +71,10 @@ type LazyMovie = {
   readonly title: string;
   readonly poster: string;
   readonly year: number;
-  readonly numberOfSeasons: number;
+  readonly type: MediaType | keyof typeof MediaType;
+  readonly numberOfSeasons?: number | null;
+  readonly duration?: number | null;
+  readonly video?: string | null;
   readonly plot: string;
   readonly cast: string;
   readonly creator: string;

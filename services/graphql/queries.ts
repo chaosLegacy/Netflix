@@ -13,7 +13,10 @@ export const getCategory = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -107,7 +110,10 @@ export const getMovie = /* GraphQL */ `
       title
       poster
       year
+      isSeries
       numberOfSeasons
+      duration
+      video
       plot
       cast
       creator
@@ -164,7 +170,10 @@ export const listMovies = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -215,7 +224,66 @@ export const syncMovies = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
+        plot
+        cast
+        creator
+        categoryID
+        category {
+          id
+          title
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        seasons {
+          nextToken
+          startedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const moviesByCategoryID = /* GraphQL */ `
+  query MoviesByCategoryID(
+    $categoryID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelMovieFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    moviesByCategoryID(
+      categoryID: $categoryID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        poster
+        year
+        isSeries
+        numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -259,7 +327,10 @@ export const getSeason = /* GraphQL */ `
         title
         poster
         year
+        isSeries
         numberOfSeasons
+        duration
+        video
         plot
         cast
         creator
@@ -331,7 +402,10 @@ export const listSeasons = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -383,7 +457,67 @@ export const syncSeasons = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
+          plot
+          cast
+          creator
+          categoryID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        episodes {
+          nextToken
+          startedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const seasonsByMovieID = /* GraphQL */ `
+  query SeasonsByMovieID(
+    $movieID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSeasonFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    seasonsByMovieID(
+      movieID: $movieID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        movieID
+        movie {
+          id
+          title
+          poster
+          year
+          isSeries
+          numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -432,7 +566,10 @@ export const getEpisode = /* GraphQL */ `
           title
           poster
           year
+          isSeries
           numberOfSeasons
+          duration
+          video
           plot
           cast
           creator
@@ -534,113 +671,6 @@ export const syncEpisodes = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const moviesByCategoryID = /* GraphQL */ `
-  query MoviesByCategoryID(
-    $categoryID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelMovieFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    moviesByCategoryID(
-      categoryID: $categoryID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        poster
-        year
-        numberOfSeasons
-        plot
-        cast
-        creator
-        categoryID
-        category {
-          id
-          title
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          __typename
-        }
-        seasons {
-          nextToken
-          startedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const seasonsByMovieID = /* GraphQL */ `
-  query SeasonsByMovieID(
-    $movieID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSeasonFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    seasonsByMovieID(
-      movieID: $movieID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        movieID
-        movie {
-          id
-          title
-          poster
-          year
-          numberOfSeasons
-          plot
-          cast
-          creator
-          categoryID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          __typename
-        }
-        episodes {
-          nextToken
-          startedAt
           __typename
         }
         createdAt

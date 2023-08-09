@@ -17,6 +17,9 @@
       },
       "api": {
         "netflix": {}
+      },
+      "storage": {
+        "netflixMediaS3": {}
       }
     }
   }

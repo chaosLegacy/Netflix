@@ -34,7 +34,7 @@ const DetailPageTemplate = () => {
   const [seasons, setSeasons] = useState<LazySeason[]>();
   const [currentSeason, setCurrentSeason] = useState<LazySeason>();
   const [currentEpisode, setCurrentEpisode] = useState<LazyEpisode>();
-  const [status, setStatus] = useState<AVPlaybackStatus>();
+  const videoStatus = useState<AVPlaybackStatus>();
 
   const availableSeasons = seasons?.map(({ id, name }) => ({
     label: name,
@@ -60,18 +60,29 @@ const DetailPageTemplate = () => {
   }, [movieEpisodes]);
 
   const videoRef = useRef<Video>(null);
-  const isVideoPlaying = status?.isLoaded && status.isPlaying;
+  const currentVideoStatus = videoStatus[0];
   const onPlayPress = () => {
-    if (status?.isLoaded) {
-      status.isPlaying
-        ? videoRef.current?.pauseAsync()
-        : videoRef.current?.playAsync();
+    if (currentVideoStatus?.isLoaded) {
+      currentVideoStatus.isPlaying
+        ? videoRef.current!.pauseAsync()
+        : videoRef.current!.playAsync();
+
+      if (
+        currentVideoStatus.durationMillis === currentVideoStatus.positionMillis
+      ) {
+        console.log('videos finished: should replay');
+        // videoRef.current!.replayAsync();
+        videoRef.current!.stopAsync();
+        videoRef.current!.playAsync();
+      }
     }
   };
+  const isVideoPlaying =
+    currentVideoStatus?.isLoaded && currentVideoStatus.isPlaying;
   const playSelectedEpisode = (episode: LazyEpisode) => {
-    videoRef.current?.stopAsync();
+    videoRef.current!.stopAsync();
     setCurrentEpisode(episode);
-    videoRef.current?.playAsync();
+    // if (currentVideoStatus?.isLoaded) videoRef.current?.playAsync();
   };
 
   return (
@@ -81,7 +92,7 @@ const DetailPageTemplate = () => {
           <VideoPlayer
             episode={currentEpisode}
             videoRef={videoRef}
-            setVideoStatus={setStatus}
+            videoStatus={videoStatus}
           />
         ) : null}
       </Skeleton>
@@ -120,13 +131,25 @@ const DetailPageTemplate = () => {
                 <Resolution style={styles.item} category="hd" size={33} />
               </View>
               <Button
-                label={isVideoPlaying ? 'Play' : 'Pause'}
+                label={
+                  !currentVideoStatus?.isLoaded
+                    ? 'Play'
+                    : isVideoPlaying
+                    ? 'Pause'
+                    : 'Play'
+                }
                 onPress={onPlayPress}
                 childrenPosition="left"
                 size="large"
                 style={styles.button}>
                 <FontAwesome5
-                  name={isVideoPlaying ? 'play' : 'pause'}
+                  name={
+                    !currentVideoStatus?.isLoaded
+                      ? 'play'
+                      : isVideoPlaying
+                      ? 'pause'
+                      : 'play'
+                  }
                   size={18}
                   color={Colors[reverseTheme].primary.text}
                 />
@@ -227,7 +250,7 @@ const DetailPageTemplate = () => {
               </View>
 
               <Skeleton show={loadingMovieSeasons}>
-                {seasons ? (
+                {seasons && currentSeason ? (
                   <RNPickerSelect
                     placeholder={{
                       label: 'Select a season',
@@ -242,6 +265,7 @@ const DetailPageTemplate = () => {
                       );
                     }}
                     style={pickerSelectStyles}
+                    value={currentSeason.id}
                     useNativeAndroidPickerStyle={false}
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     //@ts-ignore

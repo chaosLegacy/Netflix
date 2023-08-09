@@ -99,11 +99,34 @@ export const schema = {
           isRequired: true,
           attributes: [],
         },
+        type: {
+          name: 'type',
+          isArray: false,
+          type: {
+            enum: 'MediaType',
+          },
+          isRequired: true,
+          attributes: [],
+        },
         numberOfSeasons: {
           name: 'numberOfSeasons',
           isArray: false,
           type: 'Int',
-          isRequired: true,
+          isRequired: false,
+          attributes: [],
+        },
+        duration: {
+          name: 'duration',
+          isArray: false,
+          type: 'Int',
+          isRequired: false,
+          attributes: [],
+        },
+        video: {
+          name: 'video',
+          isArray: false,
+          type: 'String',
+          isRequired: false,
           attributes: [],
         },
         plot: {
@@ -410,8 +433,13 @@ export const schema = {
       ],
     },
   },
-  enums: {},
+  enums: {
+    MediaType: {
+      name: 'MediaType',
+      values: ['MOVIE', 'SERIES'],
+    },
+  },
   nonModels: {},
   codegenVersion: '3.4.4',
-  version: '0812b6cd327f6b1804669468f575d1f6',
+  version: '966aee06c5d674a288b3554ca8eba4b7',
 };

@@ -1,9 +1,12 @@
 amplify-codegen-temp/models
+src/models/
+src/services/
 .prettierrc
 .eslintrc.js
 babel.config.js
 metro.config.js
 tsconfig.json
 build/*
+dist/*
 node_modules/*
 __tests__/*

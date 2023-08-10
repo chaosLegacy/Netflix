@@ -6,6 +6,8 @@
     "start": "expo start",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "web:export": "expo export --platform web",
+    "web:serve": "npx serve dist",
     "test": "jest --watchAll",
     "lint": "echo \"\\033[33mRunning eslint check\" && yarn run lint:types && yarn run lint:path",
     "lint:types": "tsc --noEmit",

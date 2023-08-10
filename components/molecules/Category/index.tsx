@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 
 import styles from './styles';
@@ -11,17 +10,12 @@ import Poster from '@/components/molecules/Poster';
 import { View } from '@/components/molecules/Themed';
 import { useGetMovies } from '@/hooks/useMovie';
 import { LazyCategory } from '@/models';
-import { HomeScreenNavigationProp } from '@/types';
 
 type CategoryProps = {
   category: LazyCategory;
 };
 const Category = ({ category }: CategoryProps) => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
   const { data: movies, error, loading } = useGetMovies(category.id);
-  const onPress = (id: string) => {
-    navigation.navigate('DetailScreen', { id });
-  };
   if (error) {
     return <View />;
   } else if (loading) {
@@ -34,7 +28,7 @@ const Category = ({ category }: CategoryProps) => {
       </Text>
       <FlashList
         data={movies}
-        renderItem={({ item }) => <Poster item={item} onPress={onPress} />}
+        renderItem={({ item }) => <Poster item={item} />}
         estimatedItemSize={10}
         horizontal
         showsHorizontalScrollIndicator={false}

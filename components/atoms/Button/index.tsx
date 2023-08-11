@@ -4,6 +4,7 @@ import {
   TextStyle,
   TouchableOpacity,
   useColorScheme,
+  View,
   ViewStyle,
 } from 'react-native';
 
@@ -12,7 +13,6 @@ import { computeFontSize, Text } from '../Text';
 
 import styles from './styles';
 
-import { View } from '@/components/molecules/Themed';
 import Colors from '@/constants/Colors';
 
 export type ButtonProps = {
@@ -45,13 +45,13 @@ const handleButtonSize = (
       selectedSize = { padding: 12 };
       break;
     case 'medium':
-      selectedSize = { padding: 10 };
+      selectedSize = { padding: 14 };
       break;
     case 'large':
-      selectedSize = { padding: 12 };
+      selectedSize = { padding: 16 };
       break;
     case 'larger':
-      selectedSize = { padding: 20 };
+      selectedSize = { padding: 18 };
       break;
   }
   if (fullWidth) {
@@ -189,7 +189,7 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'primary',
   rounded = true,
   label = '',
-  size = 'large',
+  size = 'medium',
   textColor,
   childrenPosition = 'none',
   childrenSpacing = 'default',

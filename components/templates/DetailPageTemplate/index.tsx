@@ -4,8 +4,8 @@ import RNPickerSelect from 'react-native-picker-select';
 import ViewMoreText from 'react-native-view-more-text';
 
 import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
 import { AVPlaybackStatus, Video } from 'expo-av';
+import { useLocalSearchParams } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 
 import pickerSelectStyles from './pickerSelectStyles';
@@ -24,13 +24,12 @@ import { useGetEpisodes } from '@/hooks/useEpisode';
 import { useGetMovieByID } from '@/hooks/useMovie';
 import { useGetSeasons } from '@/hooks/useSeason';
 import { LazyEpisode, LazySeason } from '@/models';
-import { DetailScreenRouteType } from '@/types';
 
 const DetailPageTemplate = () => {
   const theme = useColorScheme() ?? 'light';
   const reverseTheme = theme === 'light' ? 'dark' : 'light';
-  const { params } = useRoute<DetailScreenRouteType>();
-  const { id } = params;
+  const { id } = useLocalSearchParams();
+  const videoId = id! as string;
   const [seasons, setSeasons] = useState<LazySeason[]>();
   const [currentSeason, setCurrentSeason] = useState<LazySeason>();
   const [currentEpisode, setCurrentEpisode] = useState<LazyEpisode>();
@@ -41,9 +40,9 @@ const DetailPageTemplate = () => {
     value: id,
   }));
 
-  const { data: movie, loading: loadingMovie } = useGetMovieByID(id);
+  const { data: movie, loading: loadingMovie } = useGetMovieByID(videoId);
   const { data: movieSeasons, loading: loadingMovieSeasons } =
-    useGetSeasons(id);
+    useGetSeasons(videoId);
   const { data: movieEpisodes, loading: loadingMovieEpisodes } = useGetEpisodes(
     currentSeason?.id,
   );
@@ -82,7 +81,6 @@ const DetailPageTemplate = () => {
   const playSelectedEpisode = (episode: LazyEpisode) => {
     videoRef.current!.stopAsync();
     setCurrentEpisode(episode);
-    // if (currentVideoStatus?.isLoaded) videoRef.current?.playAsync();
   };
 
   return (
@@ -141,6 +139,7 @@ const DetailPageTemplate = () => {
                 onPress={onPlayPress}
                 childrenPosition="left"
                 size="large"
+                fullWidth
                 style={styles.button}>
                 <FontAwesome5
                   name={
@@ -160,6 +159,7 @@ const DetailPageTemplate = () => {
                 childrenPosition="left"
                 type="outline"
                 size="large"
+                fullWidth
                 style={styles.button}>
                 <FontAwesome5
                   name="download"

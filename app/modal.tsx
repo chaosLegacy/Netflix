@@ -3,10 +3,10 @@ import { Platform, StyleSheet } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { StatusBar } from 'expo-status-bar';
 
-import { Button } from '../atoms/Button';
-
+import { Button } from '@/components/atoms/Button';
+import { Text } from '@/components/atoms/Text';
 import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/molecules/Themed';
+import { View } from '@/components/molecules/Themed';
 
 export default function ModalScreen() {
   const logout = () => {
@@ -20,9 +20,8 @@ export default function ModalScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Button label="log out" onPress={logout} />
       <EditScreenInfo path="app/modal.tsx" />
-
+      <Button label="log out" onPress={logout} />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>

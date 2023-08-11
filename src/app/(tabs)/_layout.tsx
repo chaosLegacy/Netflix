@@ -1,4 +1,4 @@
-import { Pressable, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 
 import {
   AntDesign,
@@ -6,10 +6,20 @@ import {
   Ionicons,
   MaterialIcons,
 } from '@expo/vector-icons';
-import { Link, Tabs } from 'expo-router';
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabNavigationOptions,
+} from '@react-navigation/material-top-tabs';
+import { withLayoutContext } from 'expo-router';
 
 import Colors from '@/constants/Colors';
 
+const { Navigator } = createMaterialTopTabNavigator();
+
+const MaterialBottomTabs = withLayoutContext<
+  MaterialTopTabNavigationOptions,
+  typeof Navigator
+>(Navigator);
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
@@ -24,44 +34,47 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
+    <MaterialBottomTabs
+      tabBarPosition="bottom"
       screenOptions={{
+        tabBarIndicatorStyle: { opacity: 0 },
+        tabBarLabelStyle: { textTransform: 'capitalize', fontSize: 12 },
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].primary.tint,
       }}>
-      <Tabs.Screen
+      <MaterialBottomTabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
             <AntDesign name="home" size={24} color={color} />
           ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].primary.text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          // headerRight: () => (
+          //   <Link href="/modal" asChild>
+          //     <Pressable>
+          //       {({ pressed }) => (
+          //         <FontAwesome
+          //           name="info-circle"
+          //           size={25}
+          //           color={Colors[colorScheme ?? 'light'].primary.text}
+          //           style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+          //         />
+          //       )}
+          //     </Pressable>
+          //   </Link>
+          // ),
         }}
       />
-      <Tabs.Screen
+      <MaterialBottomTabs.Screen
         name="ComingSoon"
         options={{
           title: 'Coming Soon',
-          tabBarBadge: '1',
+          // tabBarBadge: '1',
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="video-library" size={24} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
+      <MaterialBottomTabs.Screen
         name="Search"
         options={{
           title: 'Search',
@@ -70,7 +83,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      <MaterialBottomTabs.Screen
         name="Downloads"
         options={{
           title: 'Downloads',
@@ -79,6 +92,6 @@ export default function TabLayout() {
           ),
         }}
       />
-    </Tabs>
+    </MaterialBottomTabs>
   );
 }

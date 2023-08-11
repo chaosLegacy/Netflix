@@ -1,6 +1,12 @@
 import { useColorScheme } from 'react-native';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import '@azure/core-asynciterator-polyfill'; //<--- needed for DataStore to work
+import 'react-native-reanimated';
+import 'react-native-gesture-handler';
 import { Authenticator } from '@aws-amplify/ui-react-native';
 import {
   DarkTheme,
@@ -8,11 +14,11 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { Amplify } from 'aws-amplify';
-import awsExports from 'aws-exports';
-// import 'react-native-reanimated';
-// import 'react-native-gesture-handler'
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
+import awsExports from '@/aws-exports';
+import { View } from '@/components/molecules/Themed';
 import useCachedResources from '@/hooks/useCachedResources';
 
 Amplify.configure({
@@ -44,22 +50,37 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  const insets = useSafeAreaInsets();
   return (
     /**
      * New Authenticator Provider of Amplify check the docs
      * https://ui.docs.amplify.aws/react-native/connected-components/authenticator
      */
-    <Authenticator.Provider>
-      <Authenticator>
-        <ThemeProvider
-          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          </Stack>
-        </ThemeProvider>
-      </Authenticator>
-    </Authenticator.Provider>
+    <SafeAreaProvider>
+      <StatusBar />
+      <Authenticator.Provider>
+        <Authenticator>
+          <ThemeProvider
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <View
+              style={{
+                flex: 1,
+                paddingTop: insets.top,
+                // paddingBottom: insets.bottom,
+                paddingLeft: insets.left,
+                paddingRight: insets.right,
+              }}>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="modal"
+                  options={{ presentation: 'modal' }}
+                />
+              </Stack>
+            </View>
+          </ThemeProvider>
+        </Authenticator>
+      </Authenticator.Provider>
+    </SafeAreaProvider>
   );
 }

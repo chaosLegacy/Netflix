@@ -70,6 +70,7 @@ function RootLayoutNav() {
                 paddingLeft: insets.left,
                 paddingRight: insets.right,
               }}>
+              {/* <ResponsiveNavigator /> */}
               <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen

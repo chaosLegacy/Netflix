@@ -65,9 +65,10 @@ export default function TabLayout() {
         }}
       />
       <MaterialBottomTabs.Screen
-        name="ComingSoon"
+        name="(drawer)/ComingSoon"
         options={{
           title: 'Coming Soon',
+          tabBarLabel: 'Coming Soon',
           // tabBarBadge: '1',
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="video-library" size={24} color={color} />

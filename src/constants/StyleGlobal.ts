@@ -1,0 +1,65 @@
+import { Platform, StyleSheet } from 'react-native';
+
+const jsStyles = StyleSheet.create({
+  sideBar: {
+    minWidth: 72,
+    width: 72,
+  },
+  sidebarInner: {
+    position: Platform.select({ web: 'fixed', default: 'absolute' }),
+    height: '100%',
+    maxHeight: '100%',
+    alignItems: 'stretch',
+    borderRightWidth: 1,
+    // borderRightColor: Colors.lightGray,
+    minWidth: 72,
+    width: 72,
+    paddingTop: 8,
+    paddingHorizontal: 12,
+    paddingBottom: 20,
+  },
+  flex1: { flex: 1 },
+  appHeader: {
+    zIndex: 10,
+    backgroundColor: 'white',
+    position: Platform.select({ web: 'fixed', default: 'absolute' }),
+    top: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    // borderBottomColor: Colors.lightGray,
+  },
+  sidebarInner2: {
+    flex: 1,
+    alignItems: 'stretch',
+    height: '100%',
+    justifyContent: 'space-between',
+    zIndex: 3,
+  },
+  headerLogo: {
+    margin: 0,
+    display: 'flex',
+    // flex: 1,
+    alignItems: 'center',
+    padding: 12,
+    marginVertical: 4,
+    borderRadius: 4,
+    // transitionProperty: ['background-color', 'box-shadow'],
+    transitionDuration: '200ms',
+  },
+  nav: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    // borderTopColor: Colors.lightGray,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 49,
+    paddingHorizontal: 16,
+  },
+});
+
+export { jsStyles };

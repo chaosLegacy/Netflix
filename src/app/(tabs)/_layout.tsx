@@ -65,7 +65,7 @@ export default function TabLayout() {
         }}
       />
       <MaterialBottomTabs.Screen
-        name="(drawer)/ComingSoon"
+        name="ComingSoon"
         options={{
           title: 'Coming Soon',
           tabBarLabel: 'Coming Soon',

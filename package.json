@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --clear",
+    "start": "watchman watch-del-all && expo start --clear",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "web:export": "expo export --platform web",
